@@ -2,7 +2,7 @@ const HTMLPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-    entry: ['./src/index.js'],
+    entry: ['@babel/polyfill', './src/index.js'],
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js'
@@ -26,6 +26,16 @@ module.exports = {
             test: /\.css$/i,
             use: [MiniCssExtractPlugin.loader, 'css-loader'],
           },
+          {
+            test: /\.m?js$/,
+            exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['@babel/preset-env']
+              }
+            }
+          }
         ],
       }
 }
