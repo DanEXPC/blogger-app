@@ -30,20 +30,22 @@ export class PostsComponent extends Component {
 function buttonHandler(event) {
     const $element = event.target
     const id = $element.dataset.id
+    const title = $element.dataset.title
 
     if (id) {
         let favorites = JSON.parse(localStorage.getItem('favorites')) || []
-        
-        if (favorites.includes(id)) {
+        const candidate = favorites.find(post => post.id === id)
+
+        if (candidate) {
             $element.textContent = 'Сохранить'
             $element.classList.add('button-primary')
             $element.classList.remove('button-danger')
-            favorites = favorites.filter(fId => fId !== id)
+            favorites = favorites.filter(post => post.id !== id)
         } else {
             $element.textContent = 'Удалить'
             $element.classList.remove('button-primary')
             $element.classList.add('button-danger')
-            favorites.push(id)
+            favorites.push({id, title})
         }
 
         localStorage.setItem('favorites', JSON.stringify(favorites))
